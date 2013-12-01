@@ -22,9 +22,11 @@ def make_app(environment = 'production'):
     return app
 
 def register_blueprints(app):
-    import views_setup, views_auction
-    app.register_blueprint(views_setup.setup_views)
-    app.register_blueprint(views_auction.auction_views)
+    with app.app_context():
+        import views_setup, views_auction, views_oauth
+        app.register_blueprint(views_setup.setup_views)
+        app.register_blueprint(views_auction.auction_views)
+        app.register_blueprint(views_oauth.oauth_views)
 
 def load_config(app, environment):
     config = ConfigParser.ConfigParser({
