@@ -31,6 +31,12 @@ Note: You will have to place a random value for SECRET_KEY in
 splitit/config/production.conf for Flask to use its signed cookies.
 
 
+Migrating the database
+--------------
+The repository contains an empty, un-migrated database. To run migrations, run
+```python db/manage.py upgrade```
+
+
 Running Without Installation
 ----------------------------
 There are two user interfaces, one on the command line and the other as a web
