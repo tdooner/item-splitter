@@ -8,6 +8,9 @@ class Auction(db.Model):
     name = db.Column(db.String(255))
     total_bid = db.Column(db.Integer)
 
+    users = db.relationship('User', secondary='participant',
+                                    backref=db.backref('auctions', lazy='dynamic'))
+
     def __init__(self, total_bid=0):
         self.total_bid = total_bid
 

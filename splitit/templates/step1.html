@@ -21,8 +21,8 @@ Who are participating in the split. One person to a box.
     <label class="control-label">People:</label>
     <div class="controls">
       <div id="person-list">
-        {% for person in participants %}
-        <input type="text" name="people[]" value="{{person.name}}"/><br />
+        {% for user in users %}
+        <input type="text" name="people[]" value="{{user.name}}"/><br />
         {% endfor %}
       </div>
     </div>

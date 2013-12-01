@@ -44,21 +44,23 @@ def delete_auction(auction_id, auction):
 @setup_views.route('/auction/<int:auction_id>/actors', methods=['GET'])
 @lookup_or_404(Auction, 'auction_id', 'auction_obj')
 def step1(auction_id, auction_obj):
-    participants = Participant.query.filter_by(auction_id=auction_id).all()
+    users = auction_obj.users
     return render_template('step1.html',
-                           participants=participants,
+                           users=users,
                            auction=auction_obj)
 
 
 @setup_views.route('/auction/<int:auction_id>/actors', methods=['POST'])
 @lookup_or_404(Auction, 'auction_id', 'auction_obj')
 def step1_process(auction_id, auction_obj):
-    for p in db.session.query(Participant).filter_by(auction_id=auction_id).all():
-        db.session.delete(p)
+    auction_obj.participants.delete()
 
     for name in request.form.getlist('people[]'):
         if name:
-            db.session.add(Participant(name, auction_id))
+            u = User(name)
+            db.session.add(u)
+            db.session.commit()
+            db.session.add(Participant(u.id, auction_id))
 
     db.session.commit()
     return redirect(url_for('setup.step2', auction_id=auction_id))
@@ -92,10 +94,10 @@ def step2_process(auction_id, auction_obj):
 @setup_views.route('/auction/<int:auction_id>/finalize', methods=['GET'])
 @lookup_or_404(Auction, 'auction_id', 'auction_obj')
 def step3(auction_id, auction_obj):
-    zipped_particpants_items = map(None, auction_obj.participants, auction_obj.items)
+    zipped_users_items = map(None, auction_obj.users, auction_obj.items)
     return render_template('step3.html',
                            auction=auction_obj,
-                           zipped_particpants_items=zipped_particpants_items)
+                           zipped_users_items=zipped_users_items)
 
 
 @setup_views.route('/auction/<int:auction_id>/finalize', methods=['POST'])

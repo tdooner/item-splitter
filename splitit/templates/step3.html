@@ -6,8 +6,8 @@
   <tr>
     <th>Participants</th><th>Items</th>
   </tr>
-  {% for participant, item in zipped_particpants_items %}
-  <tr><td>{{participant.name}}</td><td>{{item.name}}</td></tr>
+  {% for user, item in zipped_users_items %}
+  <tr><td>{{user.name}}</td><td>{{item.name}}</td></tr>
   {% endfor %}
 
 </table>

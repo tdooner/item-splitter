@@ -26,7 +26,7 @@
   {% for auction in auctions %}
   <tr>
     <td><a href='{{ url_for('auction.auction', auction_id=auction.id) }}'>{{auction.name}}</a></td>
-    <td>{{ auction.participants|map(attribute='name')|join(', ') }}</td>
+    <td>{{ auction.users|map(attribute='name')|join(', ') }}</td>
     <td>{{ auction.items|map(attribute='name')|join(', ') }}</td>
     <td>
       <form method='post' action='{{ url_for('setup.delete_auction', auction_id=auction.id) }}' onsubmit="return confirm('Are you sure you want to delete this auction? You can not undo this!')" class='form-horizontal'>
