@@ -10,11 +10,10 @@ from flask import url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from models.shared import db
 
-
 sys.path.append(os.getcwd())
 base = os.path.abspath(os.path.dirname(__file__))
 
-def make_app(environment = 'production'):
+def make_app(environment='production'):
     app = Flask(__name__)
     load_config(app, environment)
     register_blueprints(app)
@@ -32,12 +31,11 @@ def load_config(app, environment):
     config = ConfigParser.ConfigParser({
         'base_path' : base,
     })
-    config.optionxform = str   # case-sensitive keys
+    config.optionxform = str # for case-sensitive debug keys
     config.read(os.path.join(base, 'config/%s.conf' % environment))
     app.config.update(dict(config.items('SplitIt')))
 
 def run_webserver(app):
-    app.debug = True
     app.run()
 
 splitit_app = make_app()
