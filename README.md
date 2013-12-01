@@ -27,6 +27,9 @@ sudo python setup.py install
 
 Alternatively you can download the code, don't install it at all and run the various make targets.
 
+Note: You will have to place a random value for SECRET_KEY in
+splitit/config/production.conf for Flask to use its signed cookies.
+
 
 Running Without Installation
 ----------------------------
