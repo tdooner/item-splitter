@@ -1,23 +1,17 @@
+from flask import abort
 from functools import wraps
-
-from flask import Flask
-from flask import g
-from flask import redirect
-from flask import session
-from flask import url_for
-from models.auction import Auction
 from models.shared import db
 
 
-def ensure_auction(f):
-    @wraps(f)
-    def tomato(*args, **kwargs):
-        if 'auction_id' not in session:
-            return redirect(url_for('setup.step1'))
-        else:
-            g.auction = db.session.query(Auction).get(session['auction_id'])
-            if g.auction == None:
-                return redirect(url_for('setup.step1'))
-        return f(*args, **kwargs)
-    return tomato
-
+def lookup_or_404(model, model_id, name):
+    def actually_lookup(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            obj = db.session.query(model).get(kwargs[model_id])
+            if obj:
+                kwargs[name] = obj
+            else:
+                abort(404)
+            return func(*args, **kwargs)
+        return wrapper
+    return actually_lookup

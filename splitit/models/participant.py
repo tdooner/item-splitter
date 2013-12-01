@@ -8,7 +8,7 @@ class Participant(db.Model):
     user = db.relationship('User', backref=db.backref('participants', lazy='dynamic'))
 
     auction_id = db.Column(db.Integer, db.ForeignKey('auction.id'))
-    auction = db.relationship('Auction', backref=db.backref('participants', lazy='dynamic'))
+    auction = db.relationship('Auction', backref=db.backref('participants', lazy='dynamic', cascade='all,delete'))
 
     def __init__(self, user_id, auction_id):
         self.user_id = int(user_id)

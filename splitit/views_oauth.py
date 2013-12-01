@@ -1,6 +1,5 @@
 from oauth2client.client import verify_id_token
 
-from decorators import ensure_auction
 from flask import Blueprint
 from flask import current_app
 from flask import g
