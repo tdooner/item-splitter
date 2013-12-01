@@ -7,7 +7,9 @@
 </div>
 <div class="row">
   <div class="span2 offset3">
-    <a href='/step/1' class="btn-start btn btn-primary btn-large">Start A New Auction!</a>
+    <form method='POST' action='{{ url_for('setup.create_auction') }}'>
+      <button type='submit' class='btn-start btn btn-primary btn-large'>Start A New Auction!</button>
+    </form>
   </div>
   <div class="span2 offset1">
     {% if user==None %}
