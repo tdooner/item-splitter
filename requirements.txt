@@ -2,6 +2,6 @@ Flask==0.10.1
 Flask-SQLAlchemy==1.0
 pytest==2.4.2
 Flask-OAuth==0.12
-SQLAlchemy-Migrate=0.8.2
-oauth2client=1.2
-pyopenssl=0.13.1
+SQLAlchemy-Migrate==0.8.2
+oauth2client==1.2
+pyopenssl==0.13.1
