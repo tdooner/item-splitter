@@ -6,8 +6,16 @@
   </div>
 </div>
 <div class="row">
-  <div class="span2 offset5">
+  <div class="span2 offset3">
     <a href='/step/1' class="btn-start btn btn-primary btn-large">Start A New Auction!</a>
+  </div>
+  <div class="span2 offset1">
+    {% if user==None %}
+      <a href='{{ url_for('oauth.login') }}' class="btn-start btn btn-primary btn-large">Log In</a>
+    {% else %}
+      {{ user.email }}
+      <a href='{{ url_for('oauth.logout') }}' class="btn-start btn btn-large">Log Out</a>
+    {% endif %}
   </div>
 </div>
 <h3> Existing auctions </h3>

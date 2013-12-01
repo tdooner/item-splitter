@@ -15,14 +15,15 @@ class Auction(db.Model):
         return all([p.has_completed_bidding() for p in self.participants.all()])
 
     def splitter_bids(self):
-        return [SplitterBid(i.name, b.participant.name, b.amount) for i in self.items for b in i.bids]
+        return [SplitterBid(i.name, b.participant.user.name, b.amount) for i in self.items for b in i.bids]
 
     def calculate(self):
         item_splitter = SurplusMaximizer()
-        result = item_splitter.split(                       \
-                 [i.name for i in self.items.all()],        \
-                 [p.name for p in self.participants.all()], \
-                 self.splitter_bids()                       \
+        # TODO: fix N+1 in participants user name
+        result = item_splitter.split(                            \
+                 [i.name for i in self.items.all()],             \
+                 [p.user.name for p in self.participants.all()], \
+                 self.splitter_bids()                            \
                  )
         return result
 

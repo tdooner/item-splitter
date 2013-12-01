@@ -10,6 +10,7 @@ from flask import url_for
 from models.auction import Auction
 from models.item import Item
 from models.participant import Participant
+from models.user import User
 from models.shared import db
 
 
@@ -19,7 +20,10 @@ setup_views = Blueprint('setup', __name__, template_folder = 'templates')
 def homepage():
     session['auction_id'] = None
     auctions = Auction.query.all()
-    return render_template('homepage.html', auctions=auctions)
+    user = None
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+    return render_template('homepage.html', auctions=auctions, user=user)
 
 @setup_views.route('/step/1', methods=['GET'])
 def step1():

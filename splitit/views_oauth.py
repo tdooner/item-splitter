@@ -1,3 +1,5 @@
+from oauth2client.client import verify_id_token
+
 from decorators import ensure_auction
 from flask import Blueprint
 from flask import current_app
@@ -8,6 +10,8 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask_oauth import OAuth
+from models.user import User
+from models.shared import db
 
 oauth_views = Blueprint('oauth', __name__, template_folder = 'templates')
 
@@ -31,14 +35,32 @@ def get_google_token(token=None):
 
 @oauth_views.route('/login')
 def login():
+    if 'user_id' in session:
+        return redirect('/')
     return google.authorize(callback=url_for('oauth.authorized', _external=True))
 
-@oauth_views.route('/oauth_authorized')
+@oauth_views.route('/logout')
+def logout():
+    session.pop('user_id')
+    return redirect('/')
+
+@oauth_views.route('/callback')
 @google.authorized_handler
 def authorized(resp):
     if resp is None:
-        flash('OAuth Login Failed!')
-        return redirect('/#oauth_error')
-
-    return redirect('/#oauth_success')
-
+        return redirect('/')
+    token = resp['access_token']
+    userinfo = verify_id_token(resp['id_token'],
+                               current_app.config['OAUTH_CONSUMER_KEY'])
+    email = userinfo['email']
+    u = db.session.query(User).filter_by(email = email).first()
+    if not u:
+        u = User()
+        u.email = email
+        u.oauth_access_token = token
+    else:
+        u.oauth_access_token = token
+    db.session.add(u)
+    db.session.commit()
+    session['user_id'] = u.id
+    return redirect('/')

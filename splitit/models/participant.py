@@ -5,7 +5,7 @@ class Participant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('users', lazy='dynamic'))
+    user = db.relationship('User', backref=db.backref('participants', lazy='dynamic'))
 
     auction_id = db.Column(db.Integer, db.ForeignKey('auction.id'))
     auction = db.relationship('Auction', backref=db.backref('participants', lazy='dynamic'))

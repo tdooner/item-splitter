@@ -25,7 +25,7 @@ def register_blueprints(app):
         import views_setup, views_auction, views_oauth
         app.register_blueprint(views_setup.setup_views)
         app.register_blueprint(views_auction.auction_views)
-        app.register_blueprint(views_oauth.oauth_views)
+        app.register_blueprint(views_oauth.oauth_views, url_prefix='/oauth')
 
 def load_config(app, environment):
     config = ConfigParser.ConfigParser({
